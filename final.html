@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact Mobile App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .card-slider {
+            scroll-behavior: smooth;
+        }
+        
+        .facility-card {
+            min-width: 280px;
+            transition: transform 0.2s ease;
+            aspect-ratio: 9/16;
+        }
+        
+        .facility-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .floating-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-day:hover {
+            transform: scale(1.1);
+        }
+        
+        .mini-calendar {
+            width: 200px;
+        }
+        
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+        
+        .range-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="mobile-container">
+        
+        <!-- 1. Intro Page -->
+        <div id="intro-page" class="page active">
+            <div class="gradient-bg min-h-screen flex flex-col items-center justify-center p-8 text-white relative overflow-hidden">
+                <!-- Floating Elements -->
+                <div class="floating-animation absolute top-20 left-8 w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <span class="text-2xl">🏛️</span>
+                </div>
+                <div class="floating-animation absolute top-32 right-12 w-12 h-12 bg-white/15 rounded-full flex items-center justify-center" style="animation-delay: -1s;">
+                    <span class="text-xl">🌳</span>
+                </div>
+                <div class="floating-animation absolute bottom-32 left-12 w-14 h-14 bg-white/25 rounded-full flex items-center justify-center" style="animation-delay: -2s;">
+                    <span class="text-xl">🚌</span>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="text-center z-10">
+                    <div class="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
+                        <span class="text-4xl font-bold text-white">I</span>
+                    </div>
+                    
+                    <h1 class="text-4xl font-bold mb-4">Welcome to</h1>
+                    <h2 class="text-5xl font-bold mb-6">Impact</h2>
+                    <p class="text-xl mb-12 opacity-90">Your gateway to premium facilities</p>
+                    
+                    <button onclick="goToPage('login-page')" class="bg-white text-purple-600 px-12 py-4 rounded-full text-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+                        Impact
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Login Page -->
+        <div id="login-page" class="page">
+            <div class="min-h-screen bg-white">
+                <!-- Header -->
+                <div class="gradient-bg p-6 pb-12">
+                    <button onclick="goToPage('intro-page')" class="text-white mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <h1 class="text-3xl font-bold text-white text-center">Welcome Back</h1>
+                    <p class="text-white/80 text-center mt-2">Sign in to your account</p>
+                </div>
+                
+                <!-- Login Form -->
+                <div class="px-6 -mt-6">
+                    <div class="bg-white rounded-2xl shadow-xl p-6">
+                        <form id="loginForm" onsubmit="handleLogin(event)">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                                    <input type="text" id="loginUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your username">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <input type="password" id="loginPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your password">
+                                </div>
+                                
+                                <button type="submit" class="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                                    Log In
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-6 text-center">
+                            <p class="text-gray-600">Don't have an account?</p>
+                            <button onclick="goToPage('signup-page')" class="text-purple-600 font-semibold hover:text-purple-700">
+                                Sign Up
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Sign Up Page -->
+        <div id="signup-page" class="page">
+            <div class="min-h-screen bg-white">
+                <!-- Header -->
+                <div class="gradient-bg p-6 pb-12">
+                    <button onclick="goToPage('login-page')" class="text-white mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <h1 class="text-3xl font-bold text-white text-center">Create Account</h1>
+                    <p class="text-white/80 text-center mt-2">Join Impact today</p>
+                </div>
+                
+                <!-- Signup Form -->
+                <div class="px-6 -mt-6">
+                    <div class="bg-white rounded-2xl shadow-xl p-6">
+                        <form id="signupForm" onsubmit="handleSignup(event)">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                    <input type="text" id="signupName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your full name">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                                    <input type="text" id="signupUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Choose a username">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" id="signupPhone" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your phone number">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <input type="password" id="signupPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Create a password">
+                                </div>
+                                
+                                <button type="submit" class="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-6 text-center">
+                            <p class="text-gray-600">Already have an account?</p>
+                            <button onclick="goToPage('login-page')" class="text-purple-600 font-semibold hover:text-purple-700">
+                                Log In
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Home Page -->
+        <div id="home-page" class="page">
+            <div class="min-h-screen bg-gray-50">
+                <!-- Header with Mini Calendar -->
+                <div class="gradient-bg p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h1 class="text-2xl font-bold text-white">Hello, <span id="userName">User</span>!</h1>
+                            <p class="text-white/80">What would you like to book today?</p>
+                        </div>
+                        
+                        <!-- Mini Calendar in Top Left Corner -->
+                        <div class="mini-calendar bg-white/10 backdrop-blur-sm rounded-xl p-3">
+                            <div class="text-white text-xs font-medium text-center mb-2" id="miniCalendarMonth"></div>
+                            <div class="grid grid-cols-7 gap-1" id="miniCalendarDays">
+                                <!-- Mini calendar days -->
+                            </div>
+                            <div class="flex justify-center space-x-2 mt-2 text-xs">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
+                                    <span class="text-white/80">Free</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full mr-1"></div>
+                                    <span class="text-white/80">Partial</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full mr-1"></div>
+                                    <span class="text-white/80">Full</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="logout()" class="bg-white/20 px-4 py-2 rounded-full text-white text-sm">
+                        Logout
+                    </button>
+                </div>
+                
+                <!-- Facilities Slider -->
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-gray-900">Available Facilities</h2>
+                        <div class="flex space-x-2">
+                            <button onclick="slideLeft()" class="p-2 bg-white rounded-full shadow-md">
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button onclick="slideRight()" class="p-2 bg-white rounded-full shadow-md">
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="facilitySlider" class="card-slider flex space-x-4 overflow-x-auto pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <!-- Impact Greens -->
+                        <div class="facility-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" onclick="selectFacility('greens')">
+                            <div class="h-full bg-gradient-to-br from-green-400 to-green-600 flex flex-col items-center justify-center text-white p-6">
+                                <span class="text-6xl mb-4">🌳</span>
+                                <h3 class="text-2xl font-bold mb-2 text-center">Impact Greens</h3>
+                                <p class="text-center text-green-100 text-sm mb-4">Beautiful outdoor space perfect for events and celebrations</p>
+                                <div class="mt-auto flex items-center">
+                                    <div class="w-3 h-3 bg-green-300 rounded-full mr-2"></div>
+                                    <span class="text-sm">Available Today</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Impact Auditorium -->
+                        <div class="facility-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" onclick="selectFacility('auditorium')">
+                            <div class="h-full bg-gradient-to-br from-purple-400 to-purple-600 flex flex-col items-center justify-center text-white p-6">
+                                <span class="text-6xl mb-4">🎭</span>
+                                <h3 class="text-2xl font-bold mb-2 text-center">Impact Auditorium</h3>
+                                <p class="text-center text-purple-100 text-sm mb-4">State-of-the-art auditorium with premium seating and AV systems</p>
+                                <div class="mt-auto flex items-center">
+                                    <div class="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
+                                    <span class="text-sm">Partially Booked</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ramanujan Hall -->
+                        <div class="facility-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" onclick="selectFacility('ramanujan')">
+                            <div class="h-full bg-gradient-to-br from-blue-400 to-blue-600 flex flex-col items-center justify-center text-white p-6">
+                                <span class="text-6xl mb-4">🏛️</span>
+                                <h3 class="text-2xl font-bold mb-2 text-center">Ramanujan Hall</h3>
+                                <p class="text-center text-blue-100 text-sm mb-4">Professional conference hall for meetings and seminars</p>
+                                <div class="mt-auto flex items-center">
+                                    <div class="w-3 h-3 bg-green-300 rounded-full mr-2"></div>
+                                    <span class="text-sm">Available Today</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Buses -->
+                        <div class="facility-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" onclick="selectFacility('buses')">
+                            <div class="h-full bg-gradient-to-br from-orange-400 to-orange-600 flex flex-col items-center justify-center text-white p-6">
+                                <span class="text-6xl mb-4">🚌</span>
+                                <h3 class="text-2xl font-bold mb-2 text-center">Bus Service</h3>
+                                <p class="text-center text-orange-100 text-sm mb-4">Comfortable transportation for events and trips</p>
+                                <div class="mt-auto flex items-center">
+                                    <div class="w-3 h-3 bg-green-300 rounded-full mr-2"></div>
+                                    <span class="text-sm">Available Today</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- My Bookings -->
+                <div class="px-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">My Bookings</h3>
+                    <div id="userBookingsList" class="space-y-3">
+                        <!-- User bookings will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Facility Details Page -->
+        <div id="details-page" class="page">
+            <div class="min-h-screen bg-white">
+                <!-- Header with Image -->
+                <div class="relative">
+                    <div id="facilityImage" class="h-64 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                        <span class="text-8xl">🌳</span>
+                    </div>
+                    <button onclick="goToPage('home-page')" class="absolute top-4 left-4 bg-black/20 p-2 rounded-full backdrop-blur-sm">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Content -->
+                <div class="p-6 pb-24">
+                    <h1 id="facilityName" class="text-3xl font-bold text-gray-900 mb-2">Impact Greens</h1>
+                    <p id="facilityDescription" class="text-gray-600 mb-6">Beautiful outdoor space perfect for events and celebrations</p>
+                    
+                    <!-- Tabs -->
+                    <div class="flex space-x-1 mb-6 bg-gray-100 rounded-xl p-1">
+                        <button onclick="showTab('checklist')" id="checklistTab" class="flex-1 py-2 px-3 rounded-lg font-medium transition-colors bg-white text-purple-600 shadow-sm text-sm">
+                            Checklist
+                        </button>
+                        <button onclick="showTab('calendar')" id="calendarTab" class="flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-gray-600 text-sm">
+                            Calendar
+                        </button>
+                        <button onclick="showTab('contact')" id="contactTab" class="flex-1 py-2 px-3 rounded-lg font-medium transition-colors text-gray-600 text-sm">
+                            Contact
+                        </button>
+                    </div>
+                    
+                    <!-- Checklist Tab -->
+                    <div id="checklistContent" class="tab-content">
+                        <div id="bookingForm" class="space-y-6">
+                            <!-- Date & Time Selection (for all facilities) -->
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Select Date & Time</h4>
+                                <div class="grid grid-cols-2 gap-3 mb-3">
+                                    <div>
+                                        <label class="block text-sm text-gray-600 mb-1">Date</label>
+                                        <input type="date" id="bookingDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg" onchange="updateCalendarSelection()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm text-gray-600 mb-1">Time</label>
+                                        <input type="time" id="bookingTime" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Facility Selection (for halls only) -->
+                            <div id="facilitySelection" class="hidden">
+                                <h4 class="font-semibold text-gray-900 mb-3">Select Facilities</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="greens" onchange="updateFacilitySelection()">
+                                        <span>Impact Greens</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="auditorium" onchange="updateFacilitySelection()">
+                                        <span>Impact Auditorium</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="ramanujan" onchange="updateFacilitySelection()">
+                                        <span>Ramanujan Hall</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Number of Seats (Range) -->
+                            <div id="seatsSection">
+                                <h4 class="font-semibold text-gray-900 mb-3">Number of Seats Required</h4>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <input type="range" id="seatsRange" class="range-slider w-full" min="10" max="500" value="50" oninput="updateSeatsDisplay()">
+                                    <div class="flex justify-between text-sm text-gray-600 mt-2">
+                                        <span>10</span>
+                                        <span id="seatsValue" class="font-semibold text-purple-600">50 seats</span>
+                                        <span>500</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seat Arrangement -->
+                            <div id="arrangementSection">
+                                <h4 class="font-semibold text-gray-900 mb-3">Seat Arrangement</h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer">
+                                        <input type="radio" name="arrangement" value="theater" class="mr-3">
+                                        <span class="text-sm">Theater Style</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer">
+                                        <input type="radio" name="arrangement" value="classroom" class="mr-3">
+                                        <span class="text-sm">Classroom</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer">
+                                        <input type="radio" name="arrangement" value="conference" class="mr-3">
+                                        <span class="text-sm">Conference</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer">
+                                        <input type="radio" name="arrangement" value="banquet" class="mr-3">
+                                        <span class="text-sm">Banquet</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Refreshments -->
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Refreshments</h4>
+                                <div class="flex space-x-4">
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer flex-1">
+                                        <input type="radio" name="refreshments" value="yes" class="mr-3">
+                                        <span class="text-sm">Yes, Required</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg cursor-pointer flex-1">
+                                        <input type="radio" name="refreshments" value="no" class="mr-3" checked>
+                                        <span class="text-sm">Not Required</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- AC Temperature (Only for Auditorium) -->
+                            <div id="acSection">
+                                <h4 class="font-semibold text-gray-900 mb-3">Air Conditioning</h4>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <input type="range" id="tempRange" class="range-slider w-full" min="16" max="30" value="22" oninput="updateTempDisplay()">
+                                    <div class="flex justify-between text-sm text-gray-600 mt-2">
+                                        <span>16°C</span>
+                                        <span id="tempValue" class="font-semibold text-purple-600">22°C</span>
+                                        <span>30°C</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Audio/Video System -->
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-3">Audio & Video System</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="microphone">
+                                        <span class="text-sm">Microphone System</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="projector">
+                                        <span class="text-sm">Projector & Screen</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="speakers">
+                                        <span class="text-sm">Sound System</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                        <input type="checkbox" class="mr-3" value="lighting">
+                                        <span class="text-sm">Stage Lighting</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Bus Specific Fields -->
+                            <div id="busFields" class="hidden space-y-4">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Date & Time</h4>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <input type="date" id="busDate" class="px-3 py-2 border border-gray-300 rounded-lg">
+                                        <input type="time" id="busTime" class="px-3 py-2 border border-gray-300 rounded-lg">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Seating Capacity</h4>
+                                    <select id="busSeating" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                        <option value="20">Mini Bus (20 seats)</option>
+                                        <option value="35">Standard Bus (35 seats)</option>
+                                        <option value="45">Large Bus (45 seats)</option>
+                                        <option value="55">Luxury Coach (55 seats)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Calendar Tab -->
+                    <div id="calendarContent" class="tab-content hidden">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Availability Calendar</h3>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <!-- Calendar Header -->
+                            <div class="flex items-center justify-between mb-4">
+                                <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-200 rounded-lg">
+                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <h4 id="calendarMonth" class="font-semibold text-gray-900"></h4>
+                                <button onclick="changeMonth(1)" class="p-2 hover:bg-gray-200 rounded-lg">
+                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Days Grid -->
+                            <div class="grid grid-cols-7 gap-1 mb-2">
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">S</div>
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">M</div>
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">T</div>
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">W</div>
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">T</div>
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">F</div>
+                                <div class="text-center text-xs font-medium text-gray-500 py-2">S</div>
+                            </div>
+                            
+                            <div id="calendarDays" class="grid grid-cols-7 gap-1">
+                                <!-- Calendar days will be populated -->
+                            </div>
+                            
+                            <div class="mt-4 text-sm text-gray-600">
+                                <p class="mb-2">Click on a date to select it for booking</p>
+                            </div>
+                            
+                            <!-- Legend -->
+                            <div class="flex justify-center space-x-4 mt-4 text-xs">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-green-400 rounded-full mr-1"></div>
+                                    <span>Available</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-gray-400 rounded-full mr-1"></div>
+                                    <span>Partially Booked</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-400 rounded-full mr-1"></div>
+                                    <span>Fully Booked</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Tab -->
+                    <div id="contactContent" class="tab-content hidden">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-900">Phone</div>
+                                    <div class="text-gray-600">+91 98765 43210</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-900">Email</div>
+                                    <div class="text-gray-600">bookings@impact.edu</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-900">Location</div>
+                                    <div class="text-gray-600">Impact Campus, Main Block</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fixed Bottom Buttons -->
+                <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+                    <div class="max-w-sm mx-auto flex space-x-3">
+                        <button onclick="bookFacility()" class="flex-1 gradient-bg text-white py-3 rounded-xl font-bold hover:opacity-90 transition-opacity">
+                            Book Now
+                        </button>
+                        <button onclick="showUnbookingOptions()" class="px-6 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-colors">
+                            Unbook
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unbooking Modal -->
+        <div id="unbookingModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 hidden z-50">
+            <div class="bg-white rounded-2xl p-6 w-full max-w-sm">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Cancel Booking</h3>
+                <div id="unbookingList" class="space-y-3 mb-6">
+                    <!-- User's bookings will be listed here -->
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="closeUnbookingModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('impactUsers')) || [];
+        let bookings = JSON.parse(localStorage.getItem('impactBookings')) || [];
+        let currentFacility = null;
+        let currentCalendarDate = new Date();
+        
+        // Facility Data
+        const facilities = {
+            greens: {
+                name: 'Impact Greens',
+                description: 'Beautiful outdoor space perfect for events, gatherings, and celebrations in a natural garden setting.',
+                image: { bg: 'from-green-400 to-green-600', icon: '🌳' },
+                type: 'hall'
+            },
+            auditorium: {
+                name: 'Impact Auditorium',
+                description: 'State-of-the-art auditorium with premium seating, advanced AV systems, and professional lighting for presentations and performances.',
+                image: { bg: 'from-purple-400 to-purple-600', icon: '🎭' },
+                type: 'hall'
+            },
+            ramanujan: {
+                name: 'Ramanujan Hall',
+                description: 'Professional conference hall ideal for meetings, seminars, workshops, and corporate events with modern amenities.',
+                image: { bg: 'from-blue-400 to-blue-600', icon: '🏛️' },
+                type: 'hall'
+            },
+            buses: {
+                name: 'Bus Service',
+                description: 'Comfortable and reliable transportation service for events, educational trips, and group travel with experienced drivers.',
+                image: { bg: 'from-orange-400 to-orange-600', icon: '🚌' },
+                type: 'bus'
+            }
+        };
+
+        // Navigation Functions
+        function goToPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId);
+            targetPage.classList.add('active', 'slide-in');
+            
+            setTimeout(() => {
+                targetPage.classList.remove('slide-in');
+            }, 300);
+            
+            if (pageId === 'home-page') {
+                renderMiniCalendar();
+                updateUserBookingsList();
+            }
+        }
+
+        // Authentication Functions
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentImpactUser', JSON.stringify(user));
+                document.getElementById('userName').textContent = user.name;
+                goToPage('home-page');
+            } else {
+                alert('Invalid username or password. Please try again.');
+            }
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const username = document.getElementById('signupUsername').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (users.find(u => u.username === username)) {
+                alert('Username already exists. Please choose a different one.');
+                return;
+            }
+            
+            // In real app, this would connect to MySQL database
+            const newUser = {
+                id: Date.now(),
+                name,
+                username,
+                phone,
+                password,
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('impactUsers', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentImpactUser', JSON.stringify(newUser));
+            document.getElementById('userName').textContent = newUser.name;
+            goToPage('home-page');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentImpactUser');
+            goToPage('intro-page');
+        }
+
+        // Home Page Functions
+        function slideLeft() {
+            const slider = document.getElementById('facilitySlider');
+            slider.scrollBy({ left: -300, behavior: 'smooth' });
+        }
+
+        function slideRight() {
+            const slider = document.getElementById('facilitySlider');
+            slider.scrollBy({ left: 300, behavior: 'smooth' });
+        }
+
+        function renderMiniCalendar() {
+            const now = new Date();
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            document.getElementById('miniCalendarMonth').textContent = 
+                `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+            
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            
+            const miniCalendarDays = document.getElementById('miniCalendarDays');
+            miniCalendarDays.innerHTML = '';
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'w-4 h-4';
+                miniCalendarDays.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Check all bookings for this date across all facilities
+                const dayBookings = bookings.filter(b => b.date === dateStr);
+                
+                let statusClass = 'bg-green-400'; // Available
+                if (dayBookings.length > 0) {
+                    // Calculate total booking load across all facilities
+                    const totalBookings = dayBookings.length;
+                    if (totalBookings >= 8) {
+                        statusClass = 'bg-red-400'; // Fully booked day
+                    } else if (totalBookings >= 3) {
+                        statusClass = 'bg-gray-400'; // Partially booked day
+                    }
+                }
+                
+                dayElement.className = `w-4 h-4 text-xs flex items-center justify-center rounded ${statusClass} text-white cursor-pointer hover:scale-110 transition-transform`;
+                dayElement.textContent = day;
+                dayElement.onclick = () => showDayBookings(dateStr);
+                
+                miniCalendarDays.appendChild(dayElement);
+            }
+        }
+
+        function showDayBookings(dateStr) {
+            const dayBookings = bookings.filter(b => b.date === dateStr);
+            if (dayBookings.length === 0) {
+                alert(`No bookings for ${dateStr}`);
+                return;
+            }
+            
+            const bookingDetails = dayBookings.map(booking => 
+                `• ${booking.facilityName} - ${booking.time || 'All day'} (${booking.seats} seats)`
+            ).join('\n');
+            
+            alert(`Bookings for ${dateStr}:\n\n${bookingDetails}`);
+        }
+
+        function updateUserBookingsList() {
+            const userBookings = bookings.filter(b => b.userId === currentUser?.id);
+            const bookingsList = document.getElementById('userBookingsList');
+            
+            if (userBookings.length === 0) {
+                bookingsList.innerHTML = '<p class="text-gray-500 text-center py-4">No bookings yet</p>';
+                return;
+            }
+            
+            bookingsList.innerHTML = userBookings.map(booking => `
+                <div class="bg-white rounded-lg p-4 shadow-sm border">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-semibold text-gray-900">${booking.facilityName}</h4>
+                            <p class="text-sm text-gray-600">${booking.date} at ${booking.time || 'All day'}</p>
+                            <p class="text-xs text-green-600">Booking ID: ${booking.id}</p>
+                        </div>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                            Confirmed
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectFacility(facilityId) {
+            currentFacility = facilities[facilityId];
+            
+            // Update facility details page
+            document.getElementById('facilityName').textContent = currentFacility.name;
+            document.getElementById('facilityDescription').textContent = currentFacility.description;
+            
+            // Update facility image
+            const imageDiv = document.getElementById('facilityImage');
+            imageDiv.className = `h-64 bg-gradient-to-br ${currentFacility.image.bg} flex items-center justify-center`;
+            imageDiv.innerHTML = `<span class="text-8xl">${currentFacility.image.icon}</span>`;
+            
+            // Show/hide relevant form sections based on facility type
+            if (currentFacility.type === 'bus') {
+                document.getElementById('busFields').classList.remove('hidden');
+                document.getElementById('seatsSection').classList.add('hidden');
+                document.getElementById('arrangementSection').classList.add('hidden');
+                document.getElementById('acSection').classList.add('hidden');
+            } else {
+                document.getElementById('busFields').classList.add('hidden');
+                document.getElementById('seatsSection').classList.remove('hidden');
+                document.getElementById('arrangementSection').classList.remove('hidden');
+                
+                // Show AC only for auditorium, hide for greens and ramanujan
+                if (facilityId === 'auditorium') {
+                    document.getElementById('acSection').classList.remove('hidden');
+                } else {
+                    document.getElementById('acSection').classList.add('hidden');
+                }
+            }
+            
+            renderCalendar();
+            goToPage('details-page');
+        }
+
+        // Details Page Functions
+        function showTab(tabName) {
+            document.querySelectorAll('[id$="Tab"]').forEach(tab => {
+                tab.classList.remove('bg-white', 'text-purple-600', 'shadow-sm');
+                tab.classList.add('text-gray-600');
+            });
+            
+            document.getElementById(tabName + 'Tab').classList.add('bg-white', 'text-purple-600', 'shadow-sm');
+            document.getElementById(tabName + 'Tab').classList.remove('text-gray-600');
+            
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(tabName + 'Content').classList.remove('hidden');
+        }
+
+        function updateSeatsDisplay() {
+            const seats = document.getElementById('seatsRange').value;
+            document.getElementById('seatsValue').textContent = `${seats} seats`;
+        }
+
+        function updateTempDisplay() {
+            const temp = document.getElementById('tempRange').value;
+            document.getElementById('tempValue').textContent = `${temp}°C`;
+        }
+
+        function updateFacilitySelection() {
+            // Handle facility selection logic
+        }
+
+        // Calendar Functions
+        function renderCalendar() {
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            document.getElementById('calendarMonth').textContent = `${monthNames[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            
+            const calendarDays = document.getElementById('calendarDays');
+            calendarDays.innerHTML = '';
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'h-8';
+                calendarDays.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                const dayDate = new Date(year, month, day);
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Check bookings for this specific facility and date
+                const facilityKey = Object.keys(facilities).find(key => facilities[key] === currentFacility);
+                const dayBookings = bookings.filter(b => b.date === dateStr && b.facilityId === facilityKey);
+                
+                let statusClass = 'bg-green-400'; // Available
+                if (dayBookings.length > 0) {
+                    // Determine booking status based on capacity
+                    const totalBookedSeats = dayBookings.reduce((sum, booking) => sum + parseInt(booking.seats || 0), 0);
+                    const maxCapacity = facilityKey === 'auditorium' ? 500 : facilityKey === 'ramanujan' ? 200 : facilityKey === 'greens' ? 300 : 55;
+                    
+                    if (totalBookedSeats >= maxCapacity * 0.8) {
+                        statusClass = 'bg-red-400'; // Fully booked
+                    } else if (totalBookedSeats > 0) {
+                        statusClass = 'bg-gray-400'; // Partially booked
+                    }
+                }
+                
+                if (dayDate < today.setHours(0,0,0,0)) {
+                    statusClass = 'bg-gray-300'; // Past date
+                }
+                
+                dayElement.className = `calendar-day h-8 ${statusClass} rounded-lg flex items-center justify-center text-xs font-medium text-white cursor-pointer hover:scale-110 transition-transform`;
+                dayElement.textContent = day;
+                dayElement.onclick = () => selectCalendarDate(dateStr);
+                
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function selectCalendarDate(dateStr) {
+            document.getElementById('bookingDate').value = dateStr;
+            showTab('checklist');
+        }
+
+        function updateCalendarSelection() {
+            const selectedDate = document.getElementById('bookingDate').value;
+            if (selectedDate) {
+                // Update calendar visual selection if needed
+                renderCalendar();
+            }
+        }
+
+        function changeMonth(direction) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        // Booking Functions
+        function bookFacility() {
+            if (!currentUser) {
+                alert('Please log in to make a booking.');
+                return;
+            }
+            
+            // Validate required fields
+            const bookingDate = document.getElementById('bookingDate').value;
+            const bookingTime = document.getElementById('bookingTime').value;
+            
+            if (!bookingDate) {
+                alert('Please select a date for your booking.');
+                return;
+            }
+            
+            if (!bookingTime && currentFacility.type !== 'bus') {
+                alert('Please select a time for your booking.');
+                return;
+            }
+            
+            // Collect form data
+            const bookingData = {
+                id: 'BK' + Date.now().toString().slice(-6),
+                userId: currentUser.id,
+                facilityId: Object.keys(facilities).find(key => facilities[key] === currentFacility),
+                facilityName: currentFacility.name,
+                date: bookingDate,
+                time: currentFacility.type === 'bus' ? (document.getElementById('busTime')?.value || bookingTime) : bookingTime,
+                seats: currentFacility.type === 'bus' ? document.getElementById('busSeating')?.value : document.getElementById('seatsRange')?.value,
+                arrangement: document.querySelector('input[name="arrangement"]:checked')?.value,
+                refreshments: document.querySelector('input[name="refreshments"]:checked')?.value,
+                temperature: currentFacility.name === 'Impact Auditorium' ? document.getElementById('tempRange')?.value : null,
+                audioVideo: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+                createdAt: new Date().toISOString(),
+                status: 'confirmed'
+            };
+            
+            bookings.push(bookingData);
+            localStorage.setItem('impactBookings', JSON.stringify(bookings));
+            
+            alert(`Booking confirmed!\n\nFacility: ${currentFacility.name}\nDate: ${bookingDate}\nTime: ${bookingData.time}\nBooking ID: ${bookingData.id}\n\nYou will receive a confirmation email shortly.`);
+            
+            goToPage('home-page');
+        }
+
+        function showUnbookingOptions() {
+            const userBookings = bookings.filter(b => b.userId === currentUser?.id);
+            const unbookingList = document.getElementById('unbookingList');
+            
+            if (userBookings.length === 0) {
+                unbookingList.innerHTML = '<p class="text-gray-500 text-center">No bookings to cancel</p>';
+            } else {
+                unbookingList.innerHTML = userBookings.map(booking => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div>
+                            <div class="font-medium">${booking.facilityName}</div>
+                            <div class="text-sm text-gray-600">${booking.date}</div>
+                        </div>
+                        <button onclick="cancelBooking('${booking.id}')" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                            Cancel
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('unbookingModal').classList.remove('hidden');
+        }
+
+        function cancelBooking(bookingId) {
+            bookings = bookings.filter(b => b.id !== bookingId);
+            localStorage.setItem('impactBookings', JSON.stringify(bookings));
+            
+            alert('Booking cancelled successfully!');
+            closeUnbookingModal();
+            updateUserBookingsList();
+        }
+
+        function closeUnbookingModal() {
+            document.getElementById('unbookingModal').classList.add('hidden');
+        }
+
+        // Initialize app
+        window.onload = function() {
+            const savedUser = localStorage.getItem('currentImpactUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('userName').textContent = currentUser.name;
+                goToPage('home-page');
+            }
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a3426d62626efe',t:'MTc1OTczMzc5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
